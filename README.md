@@ -27,8 +27,8 @@ Make sure you have the following installed:
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/A1X6/blog-express-server.git
-    cd blog-express-server
+    git clone https://github.com/A1X6/Blog-Express-Server.git
+    cd Blog-Express-Server
     ```
 
 2. Install the dependencies:
