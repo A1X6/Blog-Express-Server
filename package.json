@@ -24,6 +24,8 @@
     "firebase-admin": "^12.5.0",
     "path": "^0.12.7",
     "prisma": "^5.20.0",
-    "redis": "^4.7.0"
+    "redis": "^4.7.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   }
 }

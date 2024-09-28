@@ -10,6 +10,18 @@ const { isAdmin } = require("../middleware/authorization");
 
 const router = Router();
 
+
+/**
+ * @swagger
+ * /health-check:
+ *   get:
+ *     summary: Health check endpoint
+ *     description: Check if the server is running.
+ *     responses:
+ *       200:
+ *         description: Server is running
+ */
+
 router.get("/health-check", (req, res) => {
   res.send("Server is running");
 });

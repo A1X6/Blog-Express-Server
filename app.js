@@ -10,12 +10,36 @@ const csrf = require("csurf");
 const crypto = require("crypto");
 const cookieParser = require("cookie-parser");
 const redisClient = require("./config/redisClient.js");
+const swaggerJsDoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express")
 
 const secretKey = crypto.randomBytes(32).toString("hex");
 
 dotenv.config();
 
 const app = express();
+
+
+const swaggerOptions = {
+  swaggerDefinition: {
+    openapi: "3.0.0", 
+    info: {
+      title: "Blog API", 
+      version: "1.0.0", 
+      description: "API Documentation", 
+    },
+    servers: [
+      {
+        url: "http://localhost:5000", 
+      },
+    ],
+  },
+  apis: ["./routes/*.js"], 
+};
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
