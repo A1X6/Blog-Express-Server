@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  googleId      String    @unique
+  image         String?
+  role          String    @default("USER") 
+  comments      Comment[]
+  replies       Reply[]
+}
+
+model Category {
+  id    String  @id @default(cuid()) 
+  title String
+  img   String?
+  posts Post[] 
+}
+
+model Post {
+  id        String    @id @default(cuid()) 
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  title     String
+  desc      String
+  img       String?
+  views     Int       @default(0)
+  categoryId String   
+  category  Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  userId    String
+  comments  Comment[] 
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  desc      String
+  userId    String
+  postId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  replies   Reply[]
+}
+
+model Reply {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  desc      String
+  commentId String
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
