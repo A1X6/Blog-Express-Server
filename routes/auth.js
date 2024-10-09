@@ -9,25 +9,35 @@ const router = Router();
  * /auth/login:
  *   post:
  *     summary: Login user
- *     description: Logs in a user with email and password.
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               email:
- *                 type: string
- *                 example: user@example.com
- *               password:
- *                 type: string
- *                 example: password123
+ *     description: Logs in a user using a Bearer token from the Authorization header.
+ *     security:
+ *       - bearerAuth: []
+ *     requestHeaders:
+ *       Authorization:
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: "Bearer {token}"
  *     responses:
  *       200:
  *         description: Successful login
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Login successful"
+ *                 isAdmin:
+ *                   type: boolean
+ *                   example: false
  *       401:
- *         description: Unauthorized
+ *         description: Unauthorized - Missing or invalid token
+ *       403:
+ *         description: Forbidden - Invalid token
+ *       500:
+ *         description: Server Error - Invalid token
  */
 router.post("/login", authControllers.login);
 

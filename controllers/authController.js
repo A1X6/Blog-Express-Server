@@ -67,7 +67,7 @@ exports.login = async (req, res) => {
       isAdmin: req.session.isAdmin || false,
     });
   } catch (err) {
-    return res.status(500).json({ message: "Server Error - Invalid Token" });
+    return res.status(500).json({ message: "Server Error - Invalid Token" + err});
   }
 };
 

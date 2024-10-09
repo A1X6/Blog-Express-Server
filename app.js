@@ -11,7 +11,7 @@ const crypto = require("crypto");
 const cookieParser = require("cookie-parser");
 const redisClient = require("./config/redisClient.js");
 const swaggerJsDoc = require("swagger-jsdoc");
-const swaggerUi = require("swagger-ui-express")
+const swaggerUi = require("swagger-ui-express");
 
 const secretKey = crypto.randomBytes(32).toString("hex");
 
@@ -19,32 +19,36 @@ dotenv.config();
 
 const app = express();
 
-
 const swaggerOptions = {
   swaggerDefinition: {
-    openapi: "3.0.0", 
+    openapi: "3.0.0",
     info: {
-      title: "Blog API", 
-      version: "1.0.0", 
-      description: "API Documentation", 
+      title: "Blog API",
+      version: "1.0.0",
+      description: "API Documentation",
     },
     servers: [
       {
-        url: "http://localhost:5000", 
+        url: "http://localhost:5000",
       },
     ],
   },
-  apis: ["./routes/*.js"], 
+  apis: ["./routes/*.js"],
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
+const corsOptions = {
+  origin: process.env.FRONTEND_DOMAIN,
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
 
 let redisStore = new RedisStore({
   client: redisClient,
